@@ -22,22 +22,37 @@
 --     will recommend what should go in place of the underscores.
 
 module AOC.Challenge.Day01 (
-    -- day01a
-  -- , day01b
+    day01a
+  , day01b
   ) where
 
 import           AOC.Prelude
 
-day01a :: _ :~> _
+parseInput :: [Char] -> Maybe [Int]
+parseInput l = Just $ map (read . pure :: Char -> Int) l
+
+rotate :: Int -> [a] -> [a]
+rotate  =  drop <> take
+
+pairs :: Int -> [a] -> [(a, a)]
+pairs n l = zip l (rotate n l)
+
+sumPairs :: [Int] -> Int
+sumPairs = sum . map fst . filter (uncurry (==)) . pairs 1
+
+sumPairs' :: [Int] -> Int
+sumPairs' l = sum . map fst . filter (uncurry (==)) $ pairs (length l `div` 2) l
+
+day01a :: [Int] :~> Int
 day01a = MkSol
-    { sParse = Just
+    { sParse = parseInput
     , sShow  = show
-    , sSolve = Just
+    , sSolve = pure . sumPairs
     }
 
 day01b :: _ :~> _
 day01b = MkSol
-    { sParse = Just
+    { sParse = parseInput
     , sShow  = show
-    , sSolve = Just
+    , sSolve = pure . sumPairs'
     }
