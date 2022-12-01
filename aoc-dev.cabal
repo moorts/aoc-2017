@@ -31,6 +31,7 @@ common common-options
                      , bytestring
                      , constraints
                      , constraints-extras
+                     , split
                      , containers
                      , criterion
                      , data-default-class

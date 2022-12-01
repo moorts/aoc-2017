@@ -27,32 +27,32 @@ module AOC.Challenge.Day01 (
   ) where
 
 import           AOC.Prelude
+import Data.List.Split (splitOn)
+import Data.List (sort)
 
-parseInput :: [Char] -> Maybe [Int]
-parseInput l = Just $ map (read . pure :: Char -> Int) l
+paragraphs :: String -> [String]
+paragraphs = splitOn "\n\n"
 
-rotate :: Int -> [a] -> [a]
-rotate  =  drop <> take
+parse :: String -> [[Int]]
+parse = map (map read . lines) . paragraphs
 
-pairs :: Int -> [a] -> [(a, a)]
-pairs n l = zip l (rotate n l)
+solve :: [[Int]] -> Int
+solve = maximum . map sum
 
-sumPairs :: [Int] -> Int
-sumPairs = sum . map fst . filter (uncurry (==)) . pairs 1
+solve' :: [[Int]] -> Int
+solve' = sum . take 3 . reverse . sort . map sum
 
-sumPairs' :: [Int] -> Int
-sumPairs' l = sum . map fst . filter (uncurry (==)) $ pairs (length l `div` 2) l
 
-day01a :: [Int] :~> Int
+day01a :: _ :~> _
 day01a = MkSol
-    { sParse = parseInput
+    { sParse = Just . parse
     , sShow  = show
-    , sSolve = pure . sumPairs
+    , sSolve = Just . solve
     }
 
 day01b :: _ :~> _
 day01b = MkSol
-    { sParse = parseInput
+    { sParse = Just . parse
     , sShow  = show
-    , sSolve = pure . sumPairs'
+    , sSolve = Just . solve'
     }

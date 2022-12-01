@@ -2,13 +2,13 @@
 {-# OPTIONS_GHC -Wno-unused-top-binds #-}
 
 -- |
--- Module      : AOC.Challenge.Day02
+-- Module      : AOC.Challenge.Day03
 -- License     : BSD3
 --
 -- Stability   : experimental
 -- Portability : non-portable
 --
--- Day 2.  See "AOC.Solver" for the types used in this module!
+-- Day 3.  See "AOC.Solver" for the types used in this module!
 --
 -- After completing the challenge, it is recommended to:
 --
@@ -22,43 +22,22 @@
 --     will recommend what should go in place of the underscores.
 
 module AOC.Challenge.Day02 (
-    day02a
-  , day02b
+    -- day02a
+  -- , day02b
   ) where
 
 import           AOC.Prelude
-import Data.List (tails)
 
-diffRow :: [Int] -> Int
-diffRow l = abs (maximum l - minimum l)
-
-solve :: [[Int]] -> Int
-solve = sum . map diffRow
-
-pairs :: [Int] -> [(Int, Int)]
-pairs l = [(x, y) | (x:ys) <- tails l, y <- ys, x `mod` y == 0 || y `mod` x == 0]
-
-divide :: Int -> Int -> Int
-divide a b
-    | a >= b = a `div` b
-    | otherwise = b `div` a
-
-quotRow :: [Int] -> Int
-quotRow = (uncurry divide) . head . pairs
-
-solve' :: [[Int]] -> Int
-solve' = sum . map quotRow
-
-day02a :: [[Int]] :~> Int
+day02a :: _ :~> _
 day02a = MkSol
-    { sParse = pure . map (map read . words) . lines
+    { sParse = Just
     , sShow  = show
-    , sSolve = pure . solve
+    , sSolve = Just
     }
 
-day02b :: [[Int]] :~> Int
+day02b :: _ :~> _
 day02b = MkSol
-    { sParse = pure . map (map read . words) . lines
+    { sParse = Just
     , sShow  = show
-    , sSolve = pure . solve'
+    , sSolve = Just
     }
