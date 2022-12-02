@@ -32,19 +32,19 @@ parseChoice :: String -> (Int, Int)
 parseChoice s = (toNum $ head s,  toNum $ last s)
 
 toNum :: Char -> Int
-toNum 'X' = 1
-toNum 'Y' = 2
-toNum 'Z' = 3
-toNum 'A' = 1
-toNum 'B' = 2
-toNum 'C' = 3
+toNum 'X' = 0
+toNum 'Y' = 1
+toNum 'Z' = 2
+toNum 'A' = 0
+toNum 'B' = 1
+toNum 'C' = 2
 toNum _ = -1
 
 score1 :: (Int, Int) -> Int
-score1 (left, right) = right + (right - left + 1) `mod` 3 * 3
+score1 (left, right) = 1 + right + (right - left + 1) `mod` 3 * 3
 
 score2 :: (Int, Int) -> Int
-score2 (left, strat) = (strat - 1) * 3 + (left + strat) `mod` 3 + 1
+score2 (left, strat) = score1 (left, (left + strat - 1) `mod` 3)
 
 solve :: ((Int, Int) -> Int) -> [String] -> Int
 solve win = sum . map (win . parseChoice)
