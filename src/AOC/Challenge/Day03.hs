@@ -38,7 +38,7 @@ score c
 
 -- Actual Challenge Code
 process :: [Char] -> Int
-process line = score . head $ filter (\x -> x `elem` right) left
+process line = score . head $ filter (`elem` right) left
     where (left, right) = splitAt (length line `div` 2) line
 
 -- This one won't work with current parsing (remove map fromList .) to make it work
