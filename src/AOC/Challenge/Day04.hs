@@ -22,22 +22,41 @@
 --     will recommend what should go in place of the underscores.
 
 module AOC.Challenge.Day04 (
-    -- day04a
-  -- , day04b
+    day04a
+  , day04b
   ) where
 
 import           AOC.Prelude
+import Data.List.Split (splitOn)
+
+parse :: String -> [[[Int]]]
+parse = map (\line -> map (map read . splitOn ("-")) (splitOn ","  line)) . lines
+
+solve1 :: [[[Int]]] -> Int
+solve1 = length . filter check
+
+solve2 :: [[[Int]]] -> Int
+solve2 = length . filter check'
+
+check :: [[Int]] -> Bool
+check [[a0, a1], [b0, b1]] = (a0 <= b0 && a1 >= b1) || (a0 >= b0 && a1 <= b1)
+check _ = error "Should not be here"
+
+check' :: [[Int]] -> Bool
+check' [[a0, a1], [b0, b1]] = not (a1 < b0 || a0 > b1)
+check' _ = error "Should not be here"
+
 
 day04a :: _ :~> _
 day04a = MkSol
-    { sParse = Just
+    { sParse = Just . parse
     , sShow  = show
-    , sSolve = Just
+    , sSolve = Just . solve1
     }
 
 day04b :: _ :~> _
 day04b = MkSol
-    { sParse = Just
+    { sParse = Just . parse
     , sShow  = show
-    , sSolve = Just
+    , sSolve = Just . solve2
     }
