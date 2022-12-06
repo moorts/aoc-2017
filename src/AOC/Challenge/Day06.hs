@@ -36,6 +36,9 @@ windows :: Int -> [a] -> [[a]]
 windows m = foldr (zipWith (:)) (repeat []) . take m . L.tails
 
 -- Alternative version:
+-- Only works because there is guaranteed to be a maker in the list
+-- Does not throw away lists shorter than n
+-- Ex: windows' 3 [1,2,3,4] = [[1,2,3], [2,3,4], [3,4], [4], []]
 windows' :: Int -> [a] -> [[a]]
 windows' m = map (take m) . L.tails
 
@@ -43,7 +46,7 @@ isMarker :: Int -> [Char] -> Bool
 isMarker n = (n==) . length . L.nub
 
 solve' :: Int -> [Char] -> Int
-solve' n = (+n) . fromJust . L.findIndex (isMarker n) . windows' n
+solve' n = (+n) . fromJust . L.findIndex (isMarker n) . windows n
 
 day06a :: _ :~> _
 day06a = MkSol
