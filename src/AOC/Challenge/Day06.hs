@@ -22,22 +22,39 @@
 --     will recommend what should go in place of the underscores.
 
 module AOC.Challenge.Day06 (
-    -- day06a
-  -- , day06b
+    day06a
+  , day06b
   ) where
 
 import           AOC.Prelude
+import qualified Data.List as L
+
+enumerate :: [a] -> [(Int, a)]
+enumerate = zip [1..]
+
+windows :: Int -> [a] -> [[a]]
+windows m = foldr (zipWith (:)) (repeat []) . take m . L.tails
+
+-- Alternative version:
+windows' :: Int -> [a] -> [[a]]
+windows' m = map (take m) . L.tails
+
+isMarker :: Int -> [Char] -> Bool
+isMarker n = (n==) . length . L.nub
+
+solve' :: Int -> [Char] -> Int
+solve' n = (+n) . fromJust . L.findIndex (isMarker n) . windows' n
 
 day06a :: _ :~> _
 day06a = MkSol
     { sParse = Just
     , sShow  = show
-    , sSolve = Just
+    , sSolve = Just . solve' 4
     }
 
 day06b :: _ :~> _
 day06b = MkSol
     { sParse = Just
     , sShow  = show
-    , sSolve = Just
+    , sSolve = Just . solve' 14
     }
