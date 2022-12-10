@@ -29,12 +29,6 @@ module AOC.Challenge.Day10 (
 import           AOC.Prelude
 import Control.Monad.State
 
-addx :: Int -> Int -> Int
-addx = (+)
-
-noop :: Int -> Int
-noop = id
-
 registerVals = scanl (+) 1
 
 solve lines 
