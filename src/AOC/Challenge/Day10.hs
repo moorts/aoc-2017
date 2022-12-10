@@ -22,22 +22,52 @@
 --     will recommend what should go in place of the underscores.
 
 module AOC.Challenge.Day10 (
-    -- day10a
-  -- , day10b
+    day10a
+  , day10b
   ) where
 
 import           AOC.Prelude
+import Control.Monad.State
+
+addx :: Int -> Int -> Int
+addx = (+)
+
+noop :: Int -> Int
+noop = id
+
+registerVals = scanl (+) 1
+
+solve lines 
+    | trace (show (vals)) False = undefined
+    | otherwise = sum [i * (vals !! (i-1)) | i <- [20,60..220]]
+    where vals = registerVals lines
+
+enumerate = zip [0..]
+
+drawLine = map (\(idx, pos) -> if abs (idx - pos) < 2 then '#' else '.')
+
+processLine = drawLine . enumerate
+
+drawCrt idx l
+    | idx <= 200 = (processLine (take 40 l)) : drawCrt (idx + 40) (drop 40 l)
+    | otherwise = []
+
+solve' = drawCrt 0 . registerVals
+
+parseInstr :: [String] -> [Int]
+parseInstr ("noop": _) = [0]
+parseInstr ("addx": n : _) = [0, read n]
 
 day10a :: _ :~> _
 day10a = MkSol
-    { sParse = Just
+    { sParse = Just . concat . map parseInstr . map words . lines
     , sShow  = show
-    , sSolve = Just
+    , sSolve = Just . solve
     }
 
 day10b :: _ :~> _
 day10b = MkSol
-    { sParse = Just
+    { sParse = Just . concat . map parseInstr . map words . lines
     , sShow  = show
-    , sSolve = Just
+    , sSolve = Just . solve'
     }
